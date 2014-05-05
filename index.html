@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="theremin.js"></script>
+</head>
+<body>
+  <input id="theremin_slider" type="range" name="points" min="1" max="1000">
+
+  <script>
+
+    $(function(){
+        var context = new AudioContext();
+        oscillator = context.createOscillator();
+        var theremin_slider = document.getElementById("theremin_slider");
+
+        oscillator.connect(context.destination);
+        oscillator.frequency.value = theremin_slider.value;
+        oscillator.start();
+
+        theremin_slider.addEventListener('input', function() { 
+          oscillator.frequency.value = this.value;
+        }, true);
+    });
+
+  </script>
+</body>
+</html> 
