@@ -8,4 +8,6 @@
                                             || window.oAudioContext
                                             || window.msAudioContext;
 
+  if (!window.AudioContext) throw "The Web Audio API is not available in this environment"
+
 }).call(this);
