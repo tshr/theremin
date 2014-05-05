@@ -9,17 +9,17 @@
   <script>
 
     window.onload = function() {
-        var context = new AudioContext();
-        var oscillator = context.createOscillator();
-        var theremin_slider = document.getElementById("theremin_slider");
+      var context = new AudioContext();
+      var oscillator = context.createOscillator();
+      var theremin_slider = document.getElementById("theremin_slider");
 
-        oscillator.connect(context.destination);
-        oscillator.frequency.value = theremin_slider.value;
-        oscillator.start();
+      oscillator.connect(context.destination);
+      oscillator.frequency.value = theremin_slider.value;
+      oscillator.start();
 
-        theremin_slider.addEventListener('input', function() { 
-          oscillator.frequency.value = this.value;
-        }, true);
+      theremin_slider.addEventListener('input', function() {
+        oscillator.frequency.value = this.value;
+      }, true);
     };
 
   </script>
