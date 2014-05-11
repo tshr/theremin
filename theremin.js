@@ -2,7 +2,7 @@
 
   var root = this;
 
-  // Set AudioContext to vendor specific versions
+  // Set AudioContext to vendor version
   root.AudioContext = root.AudioContext || root.webkitAudioContext
                                         || root.mozAudioContext
                                         || root.oAudioContext
@@ -10,7 +10,6 @@
 
   if (!root.AudioContext) throw "The Web Audio API is not available in this environment";
 
-  // Create Theremin global object
   Theremin = root.Theremin = {};
 
-}).call(this);
+})();

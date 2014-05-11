@@ -1,0 +1,1 @@
+- Create a shim method that catches the oscillator start method and passes in 0 if no argument is given to make chrome start behavior match others
