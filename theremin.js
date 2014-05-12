@@ -19,7 +19,7 @@
 
   _.getContext = function(){
     return _.context;
-  }
+  };
 
   _.playSound = function(buffer) {
 
