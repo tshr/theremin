@@ -11,6 +11,8 @@
   // Create Theremin object
   var _ = this.Theremin = {};
 
+  _.version = "0.1";
+
   _.registerContext = function(context){
     return _.context = context;
   };
