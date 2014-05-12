@@ -10,9 +10,12 @@
 
   // Create Theremin object and private variables
   var _ = this.Theremin = {};
+  var version = "0.1";
   var context;
 
-  _.version = "0.1";
+  _.getVersion = function() {
+    return version;
+  };
 
   _.setContext = function(audio_context){
     return context = audio_context;
@@ -20,7 +23,7 @@
 
   _.getContext = function(){
     return context;
-  }
+  };
 
   _.playSound = function(buffer) {
 
