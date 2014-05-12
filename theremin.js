@@ -8,22 +8,27 @@
 
   if (!this.AudioContext) throw "The Web Audio API is not available in this environment";
 
-  // Create Theremin object
+  // Create Theremin object and private variables
   var _ = this.Theremin = {};
+  var context;
 
   _.version = "0.1";
 
-  _.registerContext = function(context){
-    return _.context = context;
+  _.setContext = function(audio_context){
+    return context = audio_context;
   };
+
+  _.getContext = function(){
+    return context;
+  }
 
   _.playSound = function(buffer) {
 
-    if (!_.context) throw "Theremin does not have a context, give Theremin an audio context by passing one to Theremin.registerContext";
+    if (!context) throw "Theremin does not have a context, give Theremin an audio context by passing one to Theremin.setContext";
 
-    var source = _.context.createBufferSource();
+    var source = context.createBufferSource();
     source.buffer = buffer;
-    source.connect(_.context.destination);
+    source.connect(context.destination);
     source.start(0);
   };
 

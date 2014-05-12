@@ -15,7 +15,7 @@
   <script>
     window.onload = function() {
 
-      var context = Theremin.registerContext(new AudioContext());
+      var context = Theremin.setContext(new AudioContext());
       var oscillator = context.createOscillator();
       var gain = context.createGain();
       var theremin_tone_slider = document.getElementById("theremin_tone_slider");
