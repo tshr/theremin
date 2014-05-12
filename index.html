@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script type="text/javascript" src="theremin.js"></script>
+  <script src="theremin.js"></script>
   <style>
     input[type=range] {
       width: 100%;
@@ -15,7 +15,7 @@
   <script>
     window.onload = function() {
 
-      var context = new AudioContext();
+      var context = Theremin.registerContext(new AudioContext());
       var oscillator = context.createOscillator();
       var gain = context.createGain();
       var theremin_tone_slider = document.getElementById("theremin_tone_slider");
@@ -36,6 +36,17 @@
       gain.gain.value = theremin_gain_slider.value;
 
       oscillator.start(0);
+
+      var request = new  XMLHttpRequest();
+      request.open('GET', "http://upload.wikimedia.org/wikipedia/en/9/90/The_Beach_Boys_-_God_only_knows.ogg", true);
+      request.responseType = 'arraybuffer';
+
+      request.onload = function() {
+        context.decodeAudioData(request.response, function(theBuffer){
+          window.buffer = theBuffer;
+        }, console.log(this));
+      }
+      request.send();
     };
   </script>
 </body>
