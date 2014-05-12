@@ -37,15 +37,16 @@
 
       oscillator.start(0);
 
-      var request = new  XMLHttpRequest();
-      request.open('GET', "http://upload.wikimedia.org/wikipedia/en/9/90/The_Beach_Boys_-_God_only_knows.ogg", true);
+      var request = new XMLHttpRequest();
+      request.open('GET', "wouldnt_it_be_nice.mp3", true);
       request.responseType = 'arraybuffer';
 
       request.onload = function() {
         context.decodeAudioData(request.response, function(theBuffer){
           window.buffer = theBuffer;
         }, console.log(this));
-      }
+      };
+
       request.send();
     };
   </script>
