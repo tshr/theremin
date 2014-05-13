@@ -1,4 +1,4 @@
-(function() {
+(function(){
 
   // Set AudioContext to vendor version
   this.AudioContext = this.AudioContext || this.webkitAudioContext
