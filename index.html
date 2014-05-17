@@ -35,7 +35,7 @@
       document.getElementById("play").addEventListener('click', function(e) {
         e.preventDefault();
         if (!window.source) {
-          window.source = Theremin.playBuffer(buffer, total_duration % buffer.duration);
+          window.source = Theremin.playBuffer(buffer, total_duration % buffer.duration, true);
           window.play_start = context.currentTime;
         }
       }, true);
