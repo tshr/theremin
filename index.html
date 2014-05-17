@@ -12,6 +12,7 @@
   <input id="theremin_tone_slider" type="range" name="points" min="1" max="1000">
   <input id="theremin_gain_slider" type="range" name="points" min="0" max="1" step="0.001">
   <a id="play" href="">play</a>
+  <a id="pause" href="">pause</a>
 
   <script>
     window.onload = function() {
@@ -21,6 +22,7 @@
       var gain = context.createGain();
       var theremin_tone_slider = document.getElementById("theremin_tone_slider");
       var theremin_gain_slider = document.getElementById("theremin_gain_slider");
+      window.total_duration = 0;
 
       theremin_tone_slider.addEventListener('input', function() {
         oscillator.frequency.value = this.value;
@@ -31,9 +33,21 @@
       }, true);
 
       document.getElementById("play").addEventListener('click', function(e) {
-        e.preventDefault()
-        Theremin.playBuffer(buffer)
-        console.log("play");
+        e.preventDefault();
+        if (!window.source) {
+          window.source = Theremin.playBuffer(buffer, total_duration % buffer.duration);
+          window.play_start = context.currentTime;
+        }
+      }, true);
+
+      document.getElementById("pause").addEventListener('click', function(e) {
+        e.preventDefault();
+        if (window.source) {
+          source.stop();
+          window.source = null;
+          window.duration = context.currentTime - play_start;
+          window.total_duration += duration;
+        }
       }, true);
 
       oscillator.connect(gain);
@@ -42,7 +56,7 @@
       oscillator.frequency.value = theremin_tone_slider.value;
       gain.gain.value = theremin_gain_slider.value;
 
-      //oscillator.start(5, 5);
+      //oscillator.start(0);
 
       var request = new XMLHttpRequest();
       request.open('GET', "wouldnt_it_be_nice.mp3", true);
