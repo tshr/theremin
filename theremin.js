@@ -25,7 +25,7 @@
     return context;
   };
 
-  _.playSound = function(buffer) {
+  _.playBuffer = function(buffer) {
 
     if (!context) throw "Theremin does not have a context, give Theremin an audio context by passing one to Theremin.setContext";
 
@@ -33,6 +33,7 @@
     source.buffer = buffer;
     source.connect(context.destination);
     source.start(0);
+    return source;
   };
 
 }());
