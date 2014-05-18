@@ -31,7 +31,7 @@
 
   _.playBuffer = function(buffer, options) {
 
-    if (!context) throw "Theremin does not have a context, give Theremin an audio context by passing one to Theremin.setContext";
+    checkContext();
 
     options = typeof options !== 'undefined' ? options : {};
     var offset = typeof options['offset'] !== 'undefined' ? options['offset'] : 0;
