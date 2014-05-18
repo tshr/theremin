@@ -13,6 +13,10 @@
   var version = "0.0.1";
   var context;
 
+  var checkContext = function() {
+    if (!context) throw "Theremin does not have a context, give Theremin an audio context by passing one to Theremin.setContext";
+  };
+
   _.getVersion = function() {
     return version;
   };
