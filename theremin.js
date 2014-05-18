@@ -25,14 +25,15 @@
     return context;
   };
 
-  _.playBuffer = function(buffer, offset, loop) {
+  _.playBuffer = function(buffer, options) {
 
     if (!context) throw "Theremin does not have a context, give Theremin an audio context by passing one to Theremin.setContext";
 
-    offset = typeof offset !== 'undefined' ? offset : 0;
-    loop = typeof loop !== 'undefined' ? loop : false;
-
+    options = typeof options !== 'undefined' ? options : {};
+    var offset = typeof options['offset'] !== 'undefined' ? options['offset'] : 0;
+    var loop = typeof options['loop'] !== 'undefined' ? options['loop'] : false;
     var source = context.createBufferSource();
+
     source.buffer = buffer;
     source.loop = loop;
     source.connect(context.destination);
