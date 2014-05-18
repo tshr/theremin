@@ -22,7 +22,8 @@
       var gain = context.createGain();
       var theremin_tone_slider = document.getElementById("theremin_tone_slider");
       var theremin_gain_slider = document.getElementById("theremin_gain_slider");
-      window.total_duration = 0;
+      var total_duration = 0;
+      var source, duration, play_start, total_duration
 
       theremin_tone_slider.addEventListener('input', function() {
         oscillator.frequency.value = this.value;
@@ -34,19 +35,19 @@
 
       document.getElementById("play").addEventListener('click', function(e) {
         e.preventDefault();
-        if (!window.source) {
-          window.source = Theremin.playBuffer(buffer, {loop: true, offset: (total_duration % buffer.duration)});
-          window.play_start = context.currentTime;
+        if (!source) {
+          source = Theremin.playBuffer(buffer, {loop: true, offset: (total_duration % buffer.duration)});
+          play_start = context.currentTime;
         }
       }, true);
 
       document.getElementById("pause").addEventListener('click', function(e) {
         e.preventDefault();
-        if (window.source) {
+        if (source) {
           source.stop();
-          window.source = null;
-          window.duration = context.currentTime - play_start;
-          window.total_duration += duration;
+          source = null;
+          duration = context.currentTime - play_start;
+          total_duration += duration;
         }
       }, true);
 
