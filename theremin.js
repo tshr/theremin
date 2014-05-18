@@ -10,7 +10,7 @@
 
   // Create Theremin object and private variables
   var _ = this.Theremin = {};
-  var version = "0.1";
+  var version = "0.0.1";
   var context;
 
   _.getVersion = function() {
