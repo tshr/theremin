@@ -23,7 +23,7 @@
       var theremin_tone_slider = document.getElementById("theremin_tone_slider");
       var theremin_gain_slider = document.getElementById("theremin_gain_slider");
       var total_duration = 0;
-      var source, duration, play_start, total_duration
+      var duration, source, play_start;
 
       theremin_tone_slider.addEventListener('input', function() {
         oscillator.frequency.value = this.value;

@@ -34,8 +34,8 @@
     checkContext();
 
     options = typeof options !== 'undefined' ? options : {};
-    var offset = typeof options['offset'] !== 'undefined' ? options['offset'] : 0;
-    var loop = typeof options['loop'] !== 'undefined' ? options['loop'] : false;
+    var offset = typeof options.offset !== 'undefined' ? options.offset : 0;
+    var loop = typeof options.loop !== 'undefined' ? options.loop : false;
     var source = context.createBufferSource();
 
     source.buffer = buffer;
