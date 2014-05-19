@@ -17,6 +17,33 @@
     if (!context) throw "Theremin does not have a context, give Theremin an audio context by passing one to Theremin.setContext";
   };
 
+  var getAjaxBufferPromise = function(url) {
+
+    return new Promise(function(resolve, reject) {
+
+      var request = new XMLHttpRequest();
+      request.open('GET', url, true);
+      request.responseType = 'arraybuffer';
+
+      request.onload = function() {
+        if (request.status == 200) {
+          resolve(request.response);
+        }
+        else {
+          reject(Error(request.statusText));
+        }
+      };
+
+      // Handle network errors
+      request.onerror = function() {
+        reject(Error("Network Error"));
+      };
+
+      // Make the request
+      request.send();
+    });
+  }
+
   _.getVersion = function() {
     return version;
   };
@@ -46,4 +73,15 @@
     return source;
   };
 
+  _.getBuffer = function(url, buffer_object) {
+    if(typeof Promise === "undefined") throw "Theremin unable to getBuffer because your browser does not support Promises";
+
+    getAjaxBufferPromise(url).then(function(response) {
+      context.decodeAudioData(response, function(theBuffer){
+        buffer_object.buffer = theBuffer;
+      });
+    }, function(error) {
+      console.error("Failed!");
+    });
+  };
 }());

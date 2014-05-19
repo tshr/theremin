@@ -9,8 +9,10 @@
   </style>
 </head>
 <body>
+  <!--
   <input id="theremin_tone_slider" type="range" name="points" min="1" max="1000">
   <input id="theremin_gain_slider" type="range" name="points" min="0" max="1" step="0.001">
+  -->
   <a id="play" href="">play</a>
   <a id="pause" href="">pause</a>
 
@@ -18,20 +20,32 @@
     window.onload = function() {
 
       var context = Theremin.setContext(new AudioContext());
-      var oscillator = context.createOscillator();
-      var gain = context.createGain();
-      var theremin_tone_slider = document.getElementById("theremin_tone_slider");
-      var theremin_gain_slider = document.getElementById("theremin_gain_slider");
+
+      // Theremin
+      // var oscillator = context.createOscillator();
+      // var gain = context.createGain();
+      // var theremin_tone_slider = document.getElementById("theremin_tone_slider");
+      // var theremin_gain_slider = document.getElementById("theremin_gain_slider");
+
+      // theremin_tone_slider.addEventListener('input', function() {
+      //   oscillator.frequency.value = this.value;
+      // }, true);
+
+      // theremin_gain_slider.addEventListener('input', function() {
+      //   gain.gain.value = this.value;
+      // }, true);
+
+      // oscillator.connect(gain);
+      // gain.connect(context.destination);
+
+      // oscillator.frequency.value = theremin_tone_slider.value;
+      // gain.gain.value = theremin_gain_slider.value;
+
+      // oscillator.start(0);
+
+      // Wouldn't It Be Nice
       var total_duration = 0;
       var duration, source, play_start;
-
-      theremin_tone_slider.addEventListener('input', function() {
-        oscillator.frequency.value = this.value;
-      }, true);
-
-      theremin_gain_slider.addEventListener('input', function() {
-        gain.gain.value = this.value;
-      }, true);
 
       document.getElementById("play").addEventListener('click', function(e) {
         e.preventDefault();
@@ -51,26 +65,7 @@
         }
       }, true);
 
-      oscillator.connect(gain);
-      gain.connect(context.destination);
-
-      oscillator.frequency.value = theremin_tone_slider.value;
-      gain.gain.value = theremin_gain_slider.value;
-
-      //oscillator.start(0);
-
-      var request = new XMLHttpRequest();
-      request.open('GET', "wouldnt_it_be_nice.mp3", true);
-      request.responseType = 'arraybuffer';
-
-      request.onload = function() {
-        context.decodeAudioData(request.response, function(theBuffer){
-          window.buffer = theBuffer;
-        }, console.log(this));
-      };
-
-      request.send();
-
+      Theremin.getBuffer("wouldnt_it_be_nice.mp3", window);
     };
   </script>
 </body>
