@@ -34,12 +34,10 @@
         }
       };
 
-      // Handle network errors
       request.onerror = function() {
         reject(Error("Network Error"));
       };
 
-      // Make the request
       request.send();
     });
   };
@@ -74,7 +72,7 @@
   };
 
   _.getBuffer = function(url, buffer_object) {
-    if(typeof Promise === "undefined") throw "Theremin unable to getBuffer because your browser does not support Promises";
+    if(typeof Promise === "undefined") throw "Theremin unable to get buffer because your browser does not support Promises";
 
     getAjaxBufferPromise(url).then(function(response) {
       context.decodeAudioData(response, function(theBuffer){
