@@ -6,7 +6,7 @@
                                         || this.oAudioContext
                                         || this.msAudioContext;
 
-  if (!this.AudioContext) throw "The Web Audio API is not available in this environment";
+  if (!this.AudioContext) throw "Theremin Error: The Web Audio API is not available in this environment";
 
   // Create Theremin object and private variables
   var _ = this.Theremin = {};
