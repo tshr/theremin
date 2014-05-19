@@ -42,7 +42,7 @@
       // Make the request
       request.send();
     });
-  }
+  };
 
   _.getVersion = function() {
     return version;
