@@ -22,20 +22,16 @@
     return new Promise(function(resolve, reject) {
 
       var request = new XMLHttpRequest();
+
       request.open('GET', url, true);
       request.responseType = 'arraybuffer';
 
       request.onload = function() {
-        if (request.status == 200) {
-          resolve(request.response);
-        }
-        else {
-          reject(Error(request.statusText));
-        }
+        request.status === 200 ? resolve(request.response) : reject(Error(request.statusText));
       };
 
       request.onerror = function() {
-        reject(Error("Network Error"));
+        reject(Error("Theremin Error: AJAX request Network Error "));
       };
 
       request.send();
@@ -72,14 +68,17 @@
   };
 
   _.getBuffer = function(url, buffer_object) {
+
+    checkContext();
+
     if(typeof Promise === "undefined") throw "Theremin unable to get buffer because your browser does not support Promises";
 
     getAjaxBufferPromise(url).then(function(response) {
-      context.decodeAudioData(response, function(theBuffer){
-        buffer_object.buffer = theBuffer;
+      context.decodeAudioData(response, function(buffer){
+        buffer_object.buffer = buffer;
       });
     }, function(error) {
-      console.error("Failed!");
+      console.error("Theremin Error: Error loading buffer, " + error);
     });
   };
 }());
