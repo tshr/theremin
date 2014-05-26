@@ -9,63 +9,54 @@
   </style>
 </head>
 <body>
-  <!--
+
   <input id="theremin_tone_slider" type="range" name="points" min="1" max="1000">
   <input id="theremin_gain_slider" type="range" name="points" min="0" max="1" step="0.001">
-  -->
+
+
+  <div>Wouldn't It Be Nice?</div>
   <a id="play" href="">play</a>
   <a id="pause" href="">pause</a>
-
   <script>
     window.onload = function() {
 
       var context = Theremin.setContext(new AudioContext());
 
-      // Theremin
-      // var oscillator = context.createOscillator();
-      // var gain = context.createGain();
-      // var theremin_tone_slider = document.getElementById("theremin_tone_slider");
-      // var theremin_gain_slider = document.getElementById("theremin_gain_slider");
+      Theremin
+      var oscillator = context.createOscillator();
+      var gain = context.createGain();
+      var theremin_tone_slider = document.getElementById("theremin_tone_slider");
+      var theremin_gain_slider = document.getElementById("theremin_gain_slider");
 
-      // theremin_tone_slider.addEventListener('input', function() {
-      //   oscillator.frequency.value = this.value;
-      // }, true);
+      theremin_tone_slider.addEventListener('input', function() {
+        oscillator.frequency.value = this.value;
+      }, true);
 
-      // theremin_gain_slider.addEventListener('input', function() {
-      //   gain.gain.value = this.value;
-      // }, true);
+      theremin_gain_slider.addEventListener('input', function() {
+        gain.gain.value = this.value;
+      }, true);
 
-      // oscillator.connect(gain);
-      // gain.connect(context.destination);
+      oscillator.connect(gain);
+      gain.connect(context.destination);
 
-      // oscillator.frequency.value = theremin_tone_slider.value;
-      // gain.gain.value = theremin_gain_slider.value;
+      oscillator.frequency.value = theremin_tone_slider.value;
+      gain.gain.value = theremin_gain_slider.value;
 
       // oscillator.start(0);
 
       // Wouldn't It Be Nice
-      var total_duration = 0;
-      var duration, source, play_start;
+      window.wouldnt_it_be_nice_player = new Theremin.Player();
+      wouldnt_it_be_nice_player.loadBuffer("wouldnt_it_be_nice.mp3")
 
       document.getElementById("play").addEventListener('click', function(e) {
         e.preventDefault();
-        if (!source) {
-          source = Theremin.playBuffer(buffer, {loop: true, offset: (total_duration % buffer.duration)});
-          play_start = context.currentTime;
-        }
+        wouldnt_it_be_nice_player.play();
       }, true);
 
       document.getElementById("pause").addEventListener('click', function(e) {
         e.preventDefault();
-        if (source) {
-          source.stop();
-          source = null;
-          duration = context.currentTime - play_start;
-          total_duration += duration;
-        }
+        wouldnt_it_be_nice_player.pause();
       }, true);
-
-      Theremin.getBuffer("wouldnt_it_be_nice.mp3", window);
     };
   </script>
 </body>

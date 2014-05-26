@@ -9,76 +9,94 @@
   if (!this.AudioContext) throw "Theremin Error: The Web Audio API is not available in this environment";
 
   // Create Theremin object and private variables
-  var _ = this.Theremin = {};
+  this.Theremin = {};
+  var Player = Theremin.Player;
   var version = "0.0.1";
   var context;
 
-  var checkContext = function() {
-    if (!context) throw "Theremin does not have a context, give Theremin an audio context by passing one to Theremin.setContext";
-  };
-
-  var getAjaxBufferPromise = function(url) {
-
-    return new Promise(function(resolve, reject) {
-
-      var request = new XMLHttpRequest();
-
-      request.open('GET', url, true);
-      request.responseType = 'arraybuffer';
-
-      request.onload = function() {
-        request.status === 200 ? resolve(request.response) : reject(Error(request.statusText));
-      };
-
-      request.onerror = function() {
-        reject(Error("Theremin Error: AJAX request Network Error "));
-      };
-
-      request.send();
-    });
-  };
-
-  _.getVersion = function() {
+  Theremin.getVersion = function() {
     return version;
   };
 
-  _.setContext = function(audio_context){
+  Theremin.setContext = function(audio_context){
     return context = audio_context;
   };
 
-  _.getContext = function(){
+  Theremin.getContext = function(){
     return context;
   };
 
-  _.playBuffer = function(buffer, options) {
+  Theremin.Player = function(){
 
-    checkContext();
+    var buffer, source, play_start;
+    var total_duration = 0;
 
-    options = typeof options !== 'undefined' ? options : {};
-    var delay = typeof options.delay !== 'undefined' ? options.delay : 0;
-    var offset = typeof options.offset !== 'undefined' ? options.offset : 0;
-    var loop = typeof options.loop !== 'undefined' ? options.loop : false;
-    var source = context.createBufferSource();
+    var getAjaxBufferPromise = function(url) {
 
-    source.buffer = buffer;
-    source.loop = loop;
-    source.connect(context.destination);
-    source.start(delay, offset);
-    return source;
-  };
+      return new Promise(function(resolve, reject) {
 
-  _.getBuffer = function(url, buffer_object) {
+        var request = new XMLHttpRequest();
 
-    checkContext();
+        request.open('GET', url, true);
+        request.responseType = 'arraybuffer';
 
-    if(typeof Promise === "undefined") throw "Theremin unable to get buffer because your browser does not support Promises";
+        request.onload = function() {
+          request.status === 200 ? resolve(request.response) : reject(Error(request.statusText));
+        };
 
-    getAjaxBufferPromise(url).then(function(response) {
-      context.decodeAudioData(response, function(buffer){
-        buffer_object.buffer = buffer;
+        request.onerror = function(){
+          reject(Error("Theremin Error: AJAX request Network Error "));
+        };
+
+        request.send();
       });
-    }, function(error) {
-      console.error("Theremin Error: Error loading buffer, " + error);
-    });
+    };
+
+    this.getBuffer = function(){
+      return buffer;
+    };
+
+    this.loadBuffer = function(url){
+
+      if(typeof Promise === "undefined") throw "Theremin unable to load buffer because your browser does not support Promises";
+
+      getAjaxBufferPromise(url).then(function(response) {
+        context.decodeAudioData(response, function(loaded_buffer){
+          buffer = loaded_buffer;
+        });
+      }, function(error) {
+        console.error("Theremin Error: Error loading buffer, " + error);
+      });
+    };
+
+    this.play = function(){
+
+      if (!buffer) throw "No buffer loaded for this player";
+
+      if (!source) {
+        play_start = context.currentTime;
+
+        if (total_duration > buffer.duration) total_duration = 0;
+        var offset = total_duration;
+
+        source = context.createBufferSource();
+        source.buffer = buffer;
+        source.loop = false;
+        source.connect(context.destination);
+        play_start = context.currentTime;
+        source.start(0, offset);
+      }
+    };
+
+    this.pause = function(){
+      if (source) {
+        var duration = context.currentTime - play_start;
+
+        source.stop();
+        source = null;
+        total_duration += duration;
+      }
+    };
   };
+
 }());
