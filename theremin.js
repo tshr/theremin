@@ -71,7 +71,9 @@
 
       if (!buffer) throw "No buffer loaded for this player";
 
-      if (total_duration > buffer.duration) {
+      var duration = context.currentTime - play_start;
+
+      if (total_duration + duration > buffer.duration) {
         if (source) {
           source.stop();
           source = null;
