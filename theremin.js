@@ -10,9 +10,7 @@
 
   // Create Theremin object and private variables
   this.Theremin = {};
-  var Player = Theremin.Player;
-  var version = "0.0.1";
-  var context;
+  var context, version = "0.0.1";
 
   Theremin.getVersion = function() {
     return version;
@@ -26,10 +24,10 @@
     return context;
   };
 
+  // Theremin Player Constructor
   Theremin.Player = function(){
 
-    var buffer, source, play_start;
-    var total_duration = 0;
+    var buffer, source, play_start, total_duration = 0;
 
     var getAjaxBufferPromise = function(url) {
 
@@ -73,17 +71,22 @@
 
       if (!buffer) throw "No buffer loaded for this player";
 
-      if (!source) {
-        play_start = context.currentTime;
+      if (total_duration > buffer.duration) {
+        if (source) {
+          source.stop();
+          source = null;
+        }
+        total_duration = 0;
+      }
 
-        if (total_duration > buffer.duration) total_duration = 0;
+      if (!source) {
         var offset = total_duration;
+        play_start = context.currentTime;
 
         source = context.createBufferSource();
         source.buffer = buffer;
         source.loop = false;
         source.connect(context.destination);
-        play_start = context.currentTime;
         source.start(0, offset);
       }
     };
@@ -91,10 +94,10 @@
     this.pause = function(){
       if (source) {
         var duration = context.currentTime - play_start;
+        total_duration += duration;
 
         source.stop();
         source = null;
-        total_duration += duration;
       }
     };
   };
