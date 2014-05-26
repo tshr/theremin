@@ -14,8 +14,8 @@
   <input id="theremin_gain_slider" type="range" name="points" min="0" max="1" step="0.001">
 
   <div>Wouldn't It Be Nice?</div>
-  <a id="play" href="">play</a>
-  <a id="pause" href="">pause</a>
+  <a id="play" class="player_control" href="">play</a>
+  <a id="pause" class="player_control" href="">pause</a>
 
   <script>
     window.onload = function() {
@@ -44,18 +44,17 @@
       // oscillator.start(0);
 
       // Wouldn't It Be Nice
-      window.wouldnt_it_be_nice_player = new Theremin.Player();
+      var wouldnt_it_be_nice_player = new Theremin.Player();
       wouldnt_it_be_nice_player.loadBuffer("wouldnt_it_be_nice.mp3")
 
-      document.getElementById("play").addEventListener('click', function(e) {
-        e.preventDefault();
-        wouldnt_it_be_nice_player.play();
-      }, true);
+      var player_controls = document.querySelectorAll(".player_control");
 
-      document.getElementById("pause").addEventListener('click', function(e) {
-        e.preventDefault();
-        wouldnt_it_be_nice_player.pause();
-      }, true);
+      for (var i = 0; i < player_controls.length; i++) {
+        player_controls[i].addEventListener('click', function(e) {
+          e.preventDefault();
+          wouldnt_it_be_nice_player[this.id]();
+        }, true);
+      };
     };
   </script>
 </body>
