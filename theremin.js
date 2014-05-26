@@ -71,7 +71,9 @@
 
       if (!buffer) throw "No buffer loaded for this player";
 
-      var duration = context.currentTime - play_start;
+      // Catch first play call when play_start hasn't been set yet and set it to currentTime
+      var temp_play_start = typeof play_start !== 'undefined' ? play_start : context.currentTime;
+      var duration = context.currentTime - temp_play_start;
 
       if (total_duration + duration > buffer.duration) {
         if (source) {
