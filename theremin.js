@@ -71,9 +71,7 @@
 
       if (!buffer) throw "No buffer loaded for this player";
 
-      // Catch first play call when play_start hasn't been set yet and set it to currentTime
-      var temp_play_start = typeof play_start !== 'undefined' ? play_start : context.currentTime;
-      var duration = context.currentTime - temp_play_start;
+      var duration = source ? context.currentTime - play_start : 0;
 
       if (total_duration + duration > buffer.duration) {
         if (source) {
@@ -84,14 +82,12 @@
       }
 
       if (!source) {
-        var offset = total_duration;
         play_start = context.currentTime;
-
         source = context.createBufferSource();
         source.buffer = buffer;
         source.loop = false;
         source.connect(context.destination);
-        source.start(0, offset);
+        source.start(0, total_duration);
       }
     };
 
@@ -99,7 +95,6 @@
       if (source) {
         var duration = context.currentTime - play_start;
         total_duration += duration;
-
         source.stop();
         source = null;
       }
