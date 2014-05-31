@@ -1,3 +1,2 @@
 - Move player methods to prototype
 - Write moveTo player method
-- Allow looping player config
