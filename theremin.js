@@ -51,13 +51,30 @@
       });
     };
 
+    var createSourceAndPlay = function() {
+      play_start = context.currentTime;
+      source = context.createBufferSource();
+      source.buffer = buffer;
+      source.loop = loop;
+      source.connect(context.destination);
+      source.start(0, accumulated_duration);
+    };
+
+    var resetPlayer = function() {
+      if (source) {
+        source.stop();
+        source = null;
+      }
+      accumulated_duration = 0;
+    };
+
     this.getBuffer = function(){
       return buffer;
     };
 
     this.loadBuffer = function(url){
 
-      if(typeof Promise === "undefined") throw "Theremin unable to load buffer because your browser does not support Promises";
+      if(typeof Promise === "undefined") throw "Theremin unable to load buffer because your environment does not support Promises";
 
       getAjaxBufferPromise(url).then(function(response) {
         context.decodeAudioData(response, function(loaded_buffer){
@@ -76,24 +93,10 @@
         accumulated_duration = accumulated_duration % buffer.duration;
       } else {
         var duration = source ? context.currentTime - play_start : 0;
-
-        if (accumulated_duration + duration > buffer.duration) {
-          if (source) {
-            source.stop();
-            source = null;
-          }
-          accumulated_duration = 0;
-        }
+        if (accumulated_duration + duration > buffer.duration) resetPlayer();
       }
 
-      if (!source) {
-        play_start = context.currentTime;
-        source = context.createBufferSource();
-        source.buffer = buffer;
-        source.loop = loop;
-        source.connect(context.destination);
-        source.start(0, accumulated_duration);
-      }
+      if (!source) createSourceAndPlay();
     };
 
     this.pause = function(){
