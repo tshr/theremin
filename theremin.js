@@ -25,7 +25,11 @@
   };
 
   // Theremin Player Constructor
-  Theremin.Player = function(loop){
+
+  Theremin.Player = (function() {
+    var Player = function(loop){
+      this.loop = loop;
+    };
 
     var buffer, source, play_start, accumulated_duration = 0;
 
@@ -54,7 +58,7 @@
       play_start = context.currentTime;
       source = context.createBufferSource();
       source.buffer = buffer;
-      source.loop = loop;
+      source.loop = this.loop;
       source.connect(context.destination);
       source.start(0, accumulated_duration);
     };
@@ -67,11 +71,11 @@
       accumulated_duration = 0;
     };
 
-    this.getBuffer = function(){
+    Player.prototype.getBuffer = function(){
       return buffer;
     };
 
-    this.loadBuffer = function(url){
+    Player.prototype.loadBuffer = function(url){
 
       if(typeof Promise === "undefined") throw "Theremin unable to load buffer because your environment does not support Promises";
 
@@ -84,11 +88,11 @@
       });
     };
 
-    this.play = function(){
+    Player.prototype.play = function(){
 
       if (!buffer) throw "No buffer loaded for this player";
 
-      if (loop) {
+      if (this.loop) {
         accumulated_duration = accumulated_duration % buffer.duration;
       } else {
         var duration = source ? context.currentTime - play_start : 0;
@@ -98,7 +102,7 @@
       if (!source) createSourceAndPlay();
     };
 
-    this.pause = function(){
+    Player.prototype.pause = function(){
       if (source) {
         var duration = context.currentTime - play_start;
         accumulated_duration += duration;
@@ -107,7 +111,7 @@
       }
     };
 
-    this.jumpTo = function(seconds, play) {
+    Player.prototype.jumpTo = function(seconds, play) {
       if (source) {
         source.stop();
         source = null;
@@ -115,6 +119,7 @@
       accumulated_duration = seconds;
       if (play) this.play();
     };
-  };
 
+    return Player;
+  })();
 }());
