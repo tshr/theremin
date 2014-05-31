@@ -12,6 +12,7 @@
   this.Theremin = {};
   var context, version = "0.0.1";
 
+  // Theremin object methods
   Theremin.getVersion = function() {
     return version;
   };
@@ -25,7 +26,6 @@
   };
 
   // Theremin Player Constructor
-
   Theremin.Player = (function() {
     var Player = function(loop){
       this.loop = loop;
