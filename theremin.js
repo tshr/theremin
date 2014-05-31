@@ -25,9 +25,10 @@
   };
 
   // Theremin Player Constructor
-  Theremin.Player = function(){
+  Theremin.Player = function(looping){
 
     var buffer, source, play_start, total_duration = 0;
+    var loop = looping === true;
 
     var getAjaxBufferPromise = function(url) {
 
@@ -71,21 +72,25 @@
 
       if (!buffer) throw "No buffer loaded for this player";
 
-      var duration = source ? context.currentTime - play_start : 0;
+      if (!loop) {
+        var duration = source ? context.currentTime - play_start : 0;
 
-      if (total_duration + duration > buffer.duration) {
-        if (source) {
-          source.stop();
-          source = null;
+        if (total_duration + duration > buffer.duration) {
+          if (source) {
+            source.stop();
+            source = null;
+          }
+          total_duration = 0;
         }
-        total_duration = 0;
+      } else {
+        total_duration = total_duration % buffer.duration;
       }
 
       if (!source) {
         play_start = context.currentTime;
         source = context.createBufferSource();
         source.buffer = buffer;
-        source.loop = false;
+        source.loop = loop;
         source.connect(context.destination);
         source.start(0, total_duration);
       }
