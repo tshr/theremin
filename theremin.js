@@ -107,6 +107,12 @@
         source = null;
       }
     };
+
+    this.jumpTo = function(seconds) {
+      this.pause();
+      accumulated_duration = seconds;
+      this.play();
+    };
   };
 
 }());
