@@ -27,11 +27,14 @@
 
   // Theremin Player Constructor
   Theremin.Player = (function() {
+
     var Player = function(loop){
       this.loop = loop;
+      this.buffer = null;
+      this.source = null;
+      this.play_start = null;
+      this.accumulated_duration = 0;
     };
-
-    var buffer, source, play_start, accumulated_duration = 0;
 
     var getAjaxBufferPromise = function(url) {
 
@@ -54,34 +57,30 @@
       });
     };
 
-    var createSourceAndPlay = function() {
-      play_start = context.currentTime;
-      source = context.createBufferSource();
-      source.buffer = buffer;
-      source.loop = this.loop;
-      source.connect(context.destination);
-      source.start(0, accumulated_duration);
+    Player.prototype.createSourceAndPlay = function() {
+      this.play_start = context.currentTime;
+      this.source = context.createBufferSource();
+      this.source.buffer = this.buffer;
+      this.source.loop = this.loop;
+      this.source.connect(context.destination);
+      this.source.start(0, this.accumulated_duration);
     };
 
-    var resetPlayer = function() {
-      if (source) {
-        source.stop();
-        source = null;
+    Player.prototype.resetPlayer = function() {
+      if (this.source) {
+        this.source.stop();
+        this.source = null;
       }
-      accumulated_duration = 0;
-    };
-
-    Player.prototype.getBuffer = function(){
-      return buffer;
+      this.accumulated_duration = 0;
     };
 
     Player.prototype.loadBuffer = function(url){
 
       if(typeof Promise === "undefined") throw "Theremin unable to load buffer because your environment does not support Promises";
-
+      var that = this;
       getAjaxBufferPromise(url).then(function(response) {
         context.decodeAudioData(response, function(loaded_buffer){
-          buffer = loaded_buffer;
+          that.buffer = loaded_buffer;
         });
       }, function(error) {
         console.error("Theremin Error: Error loading buffer, " + error);
@@ -90,33 +89,33 @@
 
     Player.prototype.play = function(){
 
-      if (!buffer) throw "No buffer loaded for this player";
+      if (!this.buffer) throw "No buffer loaded for this player";
 
       if (this.loop) {
-        accumulated_duration = accumulated_duration % buffer.duration;
+        this.accumulated_duration = this.accumulated_duration % this.buffer.duration;
       } else {
-        var duration = source ? context.currentTime - play_start : 0;
-        if (accumulated_duration + duration > buffer.duration) resetPlayer();
+        var duration = this.source ? context.currentTime - this.play_start : 0;
+        if (this.accumulated_duration + duration > this.buffer.duration) resetPlayer();
       }
 
-      if (!source) createSourceAndPlay();
+      if (!this.source) this.createSourceAndPlay();
     };
 
     Player.prototype.pause = function(){
-      if (source) {
-        var duration = context.currentTime - play_start;
-        accumulated_duration += duration;
-        source.stop();
-        source = null;
+      if (this.source) {
+        var duration = context.currentTime - this.play_start;
+        this.accumulated_duration += duration;
+        this.source.stop();
+        this.source = null;
       }
     };
 
     Player.prototype.jumpTo = function(seconds, play) {
-      if (source) {
-        source.stop();
-        source = null;
+      if (this.source) {
+        this.source.stop();
+        this.source = null;
       }
-      accumulated_duration = seconds;
+      this.accumulated_duration = seconds;
       if (play) this.play();
     };
 
