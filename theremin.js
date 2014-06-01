@@ -38,6 +38,8 @@
 
     var getAjaxBufferPromise = function(url) {
 
+      if(typeof Promise === "undefined") throw "Theremin unable to load buffer because your environment does not support Promises";
+
       return new Promise(function(resolve, reject) {
 
         var request = new XMLHttpRequest();
@@ -76,8 +78,8 @@
 
     Player.prototype.loadBuffer = function(url){
 
-      if(typeof Promise === "undefined") throw "Theremin unable to load buffer because your environment does not support Promises";
       var that = this;
+
       getAjaxBufferPromise(url).then(function(response) {
         context.decodeAudioData(response, function(loaded_buffer){
           that.buffer = loaded_buffer;
