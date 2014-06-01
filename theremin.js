@@ -96,15 +96,16 @@
 
       var accumulated_duration = this.accumulated_duration;
       var buffer_duration = this.buffer.duration;
+      var source = this.source;
 
       if (this.loop) {
         accumulated_duration = accumulated_duration % buffer_duration;
       } else {
-        var duration = this.source ? context.currentTime - this.play_start : 0;
+        var duration = source ? context.currentTime - this.play_start : 0;
         if (accumulated_duration + duration > buffer_duration) resetPlayer.call(this);
       }
 
-      if (!this.source) createSourceAndPlay.call(this);
+      if (!source) createSourceAndPlay.call(this);
     };
 
     Player.prototype.pause = function(){
