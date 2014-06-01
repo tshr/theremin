@@ -57,18 +57,22 @@
     };
 
     var createSourceAndPlay = function() {
+      var source = this.source;
+
       this.play_start = context.currentTime;
-      this.source = context.createBufferSource();
-      this.source.buffer = this.buffer;
-      this.source.loop = this.loop;
-      this.source.connect(context.destination);
-      this.source.start(0, this.accumulated_duration);
+      source = context.createBufferSource();
+      source.buffer = this.buffer;
+      source.loop = this.loop;
+      source.connect(context.destination);
+      source.start(0, this.accumulated_duration);
     };
 
     var resetPlayer = function() {
-      if (this.source) {
-        this.source.stop();
-        this.source = null;
+      var source = this.source;
+
+      if (source) {
+        source.stop();
+        source = null;
       }
       this.accumulated_duration = 0;
     };
@@ -90,29 +94,38 @@
 
       if (!this.buffer) throw "No buffer loaded for this player";
 
+      var accumulated_duration = this.accumulated_duration;
+      var buffer_duration = this.buffer.duration;
+
       if (this.loop) {
-        this.accumulated_duration = this.accumulated_duration % this.buffer.duration;
+        accumulated_duration = accumulated_duration % buffer_duration;
       } else {
         var duration = this.source ? context.currentTime - this.play_start : 0;
-        if (this.accumulated_duration + duration > this.buffer.duration) resetPlayer.call(this);
+        if (accumulated_duration + duration > buffer_duration) resetPlayer.call(this);
       }
 
       if (!this.source) createSourceAndPlay.call(this);
     };
 
     Player.prototype.pause = function(){
-      if (this.source) {
+
+      var source = this.source;
+
+      if (source) {
         var duration = context.currentTime - this.play_start;
         this.accumulated_duration += duration;
-        this.source.stop();
-        this.source = null;
+        source.stop();
+        source = null;
       }
     };
 
     Player.prototype.jumpTo = function(seconds, play) {
-      if (this.source) {
-        this.source.stop();
-        this.source = null;
+
+      var source = this.source;
+
+      if (source) {
+        source.stop();
+        source = null;
       }
       this.accumulated_duration = seconds;
       if (play) this.play();
