@@ -75,11 +75,11 @@
 
     Player.prototype.loadBuffer = function(url){
 
-      var that = this;
+      var _this = this;
 
       getAjaxBufferPromise(url).then(function(response) {
         context.decodeAudioData(response, function(loaded_buffer){
-          that.buffer = loaded_buffer;
+          _this.buffer = loaded_buffer;
         });
       }, function(error) {
         console.error("Theremin Error: Error loading buffer, " + error);
