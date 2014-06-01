@@ -30,9 +30,6 @@
 
     var Player = function(loop){
       this.loop = loop;
-      this.buffer = null;
-      this.source = null;
-      this.play_start = null;
       this.accumulated_duration = 0;
     };
 
