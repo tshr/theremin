@@ -56,7 +56,7 @@
       });
     };
 
-    Player.prototype.createSourceAndPlay = function() {
+    var createSourceAndPlay = function() {
       this.play_start = context.currentTime;
       this.source = context.createBufferSource();
       this.source.buffer = this.buffer;
@@ -65,7 +65,7 @@
       this.source.start(0, this.accumulated_duration);
     };
 
-    Player.prototype.resetPlayer = function() {
+    var resetPlayer = function() {
       if (this.source) {
         this.source.stop();
         this.source = null;
@@ -94,10 +94,10 @@
         this.accumulated_duration = this.accumulated_duration % this.buffer.duration;
       } else {
         var duration = this.source ? context.currentTime - this.play_start : 0;
-        if (this.accumulated_duration + duration > this.buffer.duration) resetPlayer();
+        if (this.accumulated_duration + duration > this.buffer.duration) resetPlayer.call(this);
       }
 
-      if (!this.source) this.createSourceAndPlay();
+      if (!this.source) createSourceAndPlay.call(this);
     };
 
     Player.prototype.pause = function(){
