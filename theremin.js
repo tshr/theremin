@@ -25,7 +25,7 @@
     return context;
   };
 
-  // Theremin Player Constructor
+  // Theremin Player constructor
   Theremin.Player = (function() {
 
     var Player = function(loop){
