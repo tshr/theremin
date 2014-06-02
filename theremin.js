@@ -57,22 +57,19 @@
     };
 
     var createSourceAndPlay = function() {
-      var source = this.source;
-
       this.play_start = context.currentTime;
-      source = context.createBufferSource();
-      source.buffer = this.buffer;
-      source.loop = this.loop;
-      source.connect(context.destination);
-      source.start(0, this.accumulated_duration);
+      this.source = context.createBufferSource();
+      this.source.buffer = this.buffer;
+      this.source.loop = this.loop;
+      this.source.connect(context.destination);
+      this.source.start(0, this.accumulated_duration);
     };
 
     var resetPlayer = function() {
-      var source = this.source;
 
-      if (source) {
-        source.stop();
-        source = null;
+      if (this.source) {
+        this.source.stop();
+        this.source = null;
       }
       this.accumulated_duration = 0;
     };
@@ -94,39 +91,30 @@
 
       if (!this.buffer) throw "No buffer loaded for this player";
 
-      var accumulated_duration = this.accumulated_duration;
-      var buffer_duration = this.buffer.duration;
-      var source = this.source;
-
       if (this.loop) {
-        accumulated_duration = accumulated_duration % buffer_duration;
+        this.accumulated_duration = this.accumulated_duration % this.buffer.duration;
       } else {
-        var duration = source ? context.currentTime - this.play_start : 0;
-        if (accumulated_duration + duration > buffer_duration) resetPlayer.call(this);
+        var duration = this.source ? context.currentTime - this.play_start : 0;
+        if (this.accumulated_duration + duration > this.buffer.duration) resetPlayer.call(this);
       }
-
-      if (!source) createSourceAndPlay.call(this);
+      if (!this.source) createSourceAndPlay.call(this);
     };
 
     Player.prototype.pause = function(){
 
-      var source = this.source;
-
-      if (source) {
+      if (this.source) {
         var duration = context.currentTime - this.play_start;
         this.accumulated_duration += duration;
-        source.stop();
-        source = null;
+        this.source.stop();
+        this.source = null;
       }
     };
 
     Player.prototype.jumpTo = function(seconds, play) {
 
-      var source = this.source;
-
       if (source) {
-        source.stop();
-        source = null;
+        this.source.stop();
+        this.source = null;
       }
       this.accumulated_duration = seconds;
       if (play) this.play();
