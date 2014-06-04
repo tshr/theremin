@@ -56,13 +56,15 @@
       });
     };
 
-    var createSourceAndPlay = function() {
-      this.play_start = context.currentTime;
+    var createSourceAndPlay = function(delay) {
+
+      delay = delay || 0;
+      this.play_start = context.currentTime + delay;
       this.source = context.createBufferSource();
       this.source.buffer = this.buffer;
       this.source.loop = this.loop;
       this.source.connect(context.destination);
-      this.source.start(0, this.accumulated_duration);
+      this.source.start(this.play_start, this.accumulated_duration);
     };
 
     var resetPlayer = function() {
@@ -87,7 +89,7 @@
       });
     };
 
-    Player.prototype.play = function(){
+    Player.prototype.play = function(delay){
 
       if (!this.buffer) throw "No buffer loaded for this player";
 
@@ -97,7 +99,7 @@
         var duration = this.source ? context.currentTime - this.play_start : 0;
         if (this.accumulated_duration + duration > this.buffer.duration) resetPlayer.call(this);
       }
-      if (!this.source) createSourceAndPlay.call(this);
+      if (!this.source) createSourceAndPlay.call(this, delay);
     };
 
     Player.prototype.pause = function(){
@@ -110,14 +112,14 @@
       }
     };
 
-    Player.prototype.jumpTo = function(seconds, play) {
+    Player.prototype.jumpTo = function(seconds, play, delay) {
 
       if (source) {
         this.source.stop();
         this.source = null;
       }
       this.accumulated_duration = seconds;
-      if (play) this.play();
+      if (play) this.play(delay);
     };
 
     return Player;
