@@ -60,11 +60,12 @@
 
       delay = delay || 0;
       this.play_start = context.currentTime + delay;
-      this.source = context.createBufferSource();
-      this.source.buffer = this.buffer;
-      this.source.loop = this.loop;
-      this.source.connect(context.destination);
-      this.source.start(this.play_start, this.accumulated_duration);
+      var source = this.source = context.createBufferSource();
+
+      source.buffer = this.buffer;
+      source.loop = this.loop;
+      source.connect(context.destination);
+      source.start(this.play_start, this.accumulated_duration);
     };
 
     var resetPlayer = function() {
@@ -114,7 +115,7 @@
 
     Player.prototype.jumpTo = function(seconds, play, delay) {
 
-      if (source) {
+      if (this.source) {
         this.source.stop();
         this.source = null;
       }
