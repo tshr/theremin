@@ -29,7 +29,7 @@
   Theremin.Player = (function() {
 
     var Player = function(loop){
-      this.loop = loop;
+      this.loop = !!loop;
       this.accumulated_duration = 0;
     };
 
