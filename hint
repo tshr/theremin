@@ -1,3 +1,4 @@
 #!/bin/sh
+
 jshint --extract=auto index.html
 jshint theremin.js
