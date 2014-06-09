@@ -32,15 +32,15 @@ describe("Theremin", function(){
 
       var player = new Theremin.Player();
 
-      it("new Theremin.Player() creates a new player object", function(){
+      it("creates a new player object", function(){
         expect(player.constructor).toBe(Theremin.Player);
       });
 
-      it("new Theremin.Player() creates a new player object with accumulated_duration set to 0", function(){
+      it("creates a new player object with accumulated_duration set to 0", function(){
         expect(player.accumulated_duration).toBe(0);
       });
 
-      it("new Theremin.Player() creates a new player object with loop set to true if true is passed as a parameter and false if nothing or false is passed", function(){
+      it("creates a new player object with loop set to true if true is passed as a param and false if nothing or false is passed", function(){
         expect(player.loop).toBe(false);
         player = new Theremin.Player(true);
         expect(player.loop).toBe(true);
