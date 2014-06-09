@@ -28,9 +28,9 @@ describe("Theremin", function(){
 
   describe("Player", function(){
 
-    describe("Player constructor", function(){
+    var player = new Theremin.Player();
 
-      var player = new Theremin.Player();
+    describe("Player constructor", function(){
 
       it("creates a new player object", function(){
         expect(player.constructor).toBe(Theremin.Player);
