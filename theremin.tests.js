@@ -42,8 +42,10 @@ describe("Theremin", function(){
 
       it("creates a new player object with loop set to true if true is passed as a param and false if nothing or false is passed", function(){
         expect(player.loop).toBe(false);
+
         player = new Theremin.Player(true);
         expect(player.loop).toBe(true);
+
         player = new Theremin.Player(false);
         expect(player.loop).toBe(false);
       });
