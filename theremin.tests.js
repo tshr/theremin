@@ -136,6 +136,22 @@ describe("Theremin", function(){
             expect(player.accumulated_duration).toBe(5);
           });
         });
+
+        it ("sets the source to null if the player is already playing", function() {
+          runs(function() {
+            player.play();
+            player.jumpTo(5)
+            expect(player.source).toBe(null);
+          });
+        });
+
+        it ("starts playing the player at the jumpTo point if play is set to true, with a delay if delay is set", function() {
+          spyOn(player, 'play');
+          runs(function() {
+            player.jumpTo(5, true, 2)
+            expect(player.play).toHaveBeenCalledWith(2);
+          });
+        });
       });
     });
   });
