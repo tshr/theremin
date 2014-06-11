@@ -58,7 +58,7 @@ describe("Theremin", function(){
 
         waitsFor(function() {
           return !!player.buffer;
-        }, "Buffer failed to load", 10000);
+        }, "Buffer failed to load", 5000);
 
         runs(function() {
           expect(player.buffer.constructor).toBe(AudioBuffer);
