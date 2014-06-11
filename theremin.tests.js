@@ -59,7 +59,7 @@ describe("Theremin", function(){
         });
 
         waitsFor(function() {
-          return !!player.buffer;
+          return player.buffer;
         }, "Buffer failed to load", 5000);
 
         runs(function() {
