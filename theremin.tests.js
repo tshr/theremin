@@ -62,7 +62,6 @@ describe("Theremin", function(){
 
         runs(function() {
           expect(player.buffer.constructor).toBe(AudioBuffer);
-          expect(player.buffer.duration).toBe(18.991609573364258);
         });
       });
     });
