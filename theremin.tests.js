@@ -48,5 +48,23 @@ describe("Theremin", function(){
         expect(player.loop).toBe(false);
       });
     });
+
+    describe("#loadBuffer", function() {
+      it("loads an audio buffer", function() {
+
+        runs(function() {
+          player.loadBuffer("http://upload.wikimedia.org/wikipedia/en/f/fd/Beach_Boys-wouldn_t_it_be_nice.ogg");
+        });
+
+        waitsFor(function() {
+          return !!player.buffer;
+        }, "Buffer failed to load", 10000);
+
+        runs(function() {
+          expect(player.buffer.constructor).toBe(AudioBuffer);
+          expect(player.buffer.duration).toBe(18.991609573364258);
+        });
+      });
+    });
   });
 });
