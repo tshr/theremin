@@ -10,8 +10,10 @@
 </head>
 <body>
 
+  <!--
   <input id="theremin_tone_slider" type="range" name="points" min="1" max="1000">
   <input id="theremin_gain_slider" type="range" name="points" min="0" max="1" step="0.001">
+  -->
 
   <h1>Wouldn't It Be Nice?</h1>
   <a id="play" class="player_control" href="">play</a>
@@ -20,34 +22,12 @@
   <script>
     window.onload = function() {
 
+      // Wouldn't it be nice
       var context = Theremin.setContext(new AudioContext());
-
-      //Theremin
-      var oscillator = context.createOscillator();
-      var gain = context.createGain();
-      var theremin_tone_slider = document.getElementById("theremin_tone_slider");
-      var theremin_gain_slider = document.getElementById("theremin_gain_slider");
-
-      theremin_tone_slider.addEventListener('input', function() {
-        oscillator.frequency.value = this.value;
-      }, true);
-
-      theremin_gain_slider.addEventListener('input', function() {
-        gain.gain.value = this.value;
-      }, true);
-
-      oscillator.connect(gain);
-      gain.connect(context.destination);
-
-      oscillator.frequency.value = theremin_tone_slider.value;
-      gain.gain.value = theremin_gain_slider.value;
-      // oscillator.start(0);
-
-      // Wouldn't It Be Nice
       var wouldnt_it_be_nice_player = new Theremin.Player();
-      wouldnt_it_be_nice_player.loadBuffer("wouldnt_it_be_nice.mp3");
-
       var player_controls = document.querySelectorAll(".player_control");
+
+      wouldnt_it_be_nice_player.loadBuffer("wouldnt_it_be_nice.mp3");
 
       for (var i = 0; i < player_controls.length; i++) {
         player_controls[i].addEventListener('click', function(e) {
@@ -55,6 +35,27 @@
           wouldnt_it_be_nice_player[this.id]();
         });
       }
+
+      //Theremin
+      // var oscillator = context.createOscillator();
+      // var gain = context.createGain();
+      // var theremin_tone_slider = document.getElementById("theremin_tone_slider");
+      // var theremin_gain_slider = document.getElementById("theremin_gain_slider");
+
+      // theremin_tone_slider.addEventListener('input', function() {
+      //   oscillator.frequency.value = this.value;
+      // }, true);
+
+      // theremin_gain_slider.addEventListener('input', function() {
+      //   gain.gain.value = this.value;
+      // }, true);
+
+      // oscillator.connect(gain);
+      // gain.connect(context.destination);
+
+      // oscillator.frequency.value = theremin_tone_slider.value;
+      // gain.gain.value = theremin_gain_slider.value;
+      // oscillator.start(0);
     };
   </script>
 </body>
