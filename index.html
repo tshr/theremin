@@ -24,10 +24,8 @@
 
       // Wouldn't it be nice
       var context = Theremin.setContext(new AudioContext());
-      var wouldnt_it_be_nice_player = new Theremin.Player();
+      var wouldnt_it_be_nice_player = new Theremin.Player({buffer: "wouldnt_it_be_nice.mp3"});
       var player_controls = document.querySelectorAll(".player_control");
-
-      wouldnt_it_be_nice_player.loadBuffer("wouldnt_it_be_nice.mp3");
 
       for (var i = 0; i < player_controls.length; i++) {
         player_controls[i].addEventListener('click', function(e) {

@@ -28,8 +28,10 @@
   // Theremin Player constructor
   Theremin.Player = (function() {
 
-    var Player = function(loop){
-      this.loop = !!loop;
+    var Player = function(options){
+      options = options || {};
+      this.loop = !!options.loop;
+      if (typeof options.buffer !== 'undefined') this.buffer = this.loadBuffer(options.buffer);
       this.accumulated_duration = 0;
     };
 

@@ -40,14 +40,29 @@ describe("Theremin", function(){
         expect(player.accumulated_duration).toBe(0);
       });
 
-      it("creates a new player object with loop set to true if true is passed as a param and false if nothing or false is passed", function(){
+      it("creates a new player object with loop set to true if true is passed as an options param and false if nothing or false is passed", function(){
         expect(player.loop).toBe(false);
 
-        player = new Theremin.Player(true);
+        player = new Theremin.Player({loop: true});
         expect(player.loop).toBe(true);
 
-        player = new Theremin.Player(false);
+        player = new Theremin.Player({loop: false});
         expect(player.loop).toBe(false);
+      });
+
+      it("creates a new player object and loads an audio buffer if one is passed in as an option param", function() {
+
+        runs(function() {
+          player = new Theremin.Player({buffer: "http://upload.wikimedia.org/wikipedia/en/f/fd/Beach_Boys-wouldn_t_it_be_nice.ogg"});
+        });
+
+        waitsFor(function() {
+          return player.buffer;
+        }, "Buffer failed to load", 5000);
+
+        runs(function() {
+          expect(player.buffer.constructor).toBe(AudioBuffer);
+        });
       });
     });
 
@@ -110,7 +125,7 @@ describe("Theremin", function(){
         });
 
         it("if the player is not playing it creates a new source", function() {
-          player.source = null
+          player.source = null;
           player.play();
           expect(player.source.constructor).toBe(AudioBufferSourceNode);
         });
@@ -132,7 +147,7 @@ describe("Theremin", function(){
 
         it ("sets accumulated_duration to seconds specified in params", function() {
           runs(function() {
-            player.jumpTo(5)
+            player.jumpTo(5);
             expect(player.accumulated_duration).toBe(5);
           });
         });
@@ -140,7 +155,7 @@ describe("Theremin", function(){
         it ("sets the source to null if the player is already playing", function() {
           runs(function() {
             player.play();
-            player.jumpTo(5)
+            player.jumpTo(5);
             expect(player.source).toBe(null);
           });
         });
@@ -148,7 +163,7 @@ describe("Theremin", function(){
         it ("starts playing the player at the jumpTo point if play is set to true, with a delay if delay is set", function() {
           spyOn(player, 'play');
           runs(function() {
-            player.jumpTo(5, true, 2)
+            player.jumpTo(5, true, 2);
             expect(player.play).toHaveBeenCalledWith(2);
           });
         });
