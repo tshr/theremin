@@ -1,4 +1,4 @@
 #!/bin/sh
-jshint --extract=auto index.html
-jshint theremin.js
 coffeelint theremin.tests.js.coffee
+jshint theremin.js
+jshint --extract=auto index.html
