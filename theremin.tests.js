@@ -40,7 +40,8 @@ describe("Theremin", function(){
         expect(player.accumulated_duration).toBe(0);
       });
 
-      it("creates a new player object with loop set to true if true is passed as an options param and false if nothing or false is passed", function(){
+      it("creates a new player object with loop set to true if true is passed as \
+        an options param and false if nothing or false is passed", function(){
         expect(player.loop).toBe(false);
 
         player = new Theremin.Player({loop: true});
@@ -106,7 +107,8 @@ describe("Theremin", function(){
           expect(function(){ new_player.play(); }).toThrow("No buffer loaded for this player");
         });
 
-        it("if loop is true it sets the accumulated duration to the modulo of the accumulated duration over the buffer duration", function() {
+        it("if loop is true it sets the accumulated duration to the modulo of \
+          the accumulated duration over the buffer duration", function() {
           runs(function() {
             player.loop = true;
             player.accumulated_duration = 1000000;
@@ -115,7 +117,8 @@ describe("Theremin", function(){
           });
         });
 
-        it("if loop is false, the player is playing, and the accumulated duration is greater than buffer duration the player is reset", function() {
+        it("if loop is false, the player is playing, and the accumulated \
+          duration is greater than buffer duration the player is reset", function() {
           runs(function() {
             player.loop = false;
             player.accumulated_duration = 1000000;
@@ -160,7 +163,8 @@ describe("Theremin", function(){
           });
         });
 
-        it ("starts playing the player at the jumpTo point if play is set to true, with a delay if delay is set", function() {
+        it ("starts playing the player at the jumpTo point if play is set to true, \
+          with a delay if delay is set", function() {
           spyOn(player, 'play');
           runs(function() {
             player.jumpTo(5, true, 2);
