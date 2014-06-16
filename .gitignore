@@ -2,3 +2,4 @@
 .DS_Store
 scrap
 node_modules
+coffeelint.json
