@@ -19,6 +19,8 @@ describe "Theremin", ->
 
   describe "Player", ->
     player = new Theremin.Player()
+    audio_url = "http://upload.wikimedia.org/wikipedia/en/f/fd/Beach_Boys-wouldn_t_it_be_nice.ogg"
+
     describe "Constructor", ->
       it "creates a new player object", ->
         expect(player.constructor).toBe Theremin.Player
@@ -37,8 +39,7 @@ describe "Theremin", ->
       it "creates a new player object and loads an audio buffer if one is passed /
       in as an option param", ->
         runs ->
-          audio_buffer_url = "http://upload.wikimedia.org/wikipedia/en/f/fd/Beach_Boys-wouldn_t_it_be_nice.ogg"
-          player = new Theremin.Player(buffer: audio_buffer_url)
+          player = new Theremin.Player(buffer: audio_url)
 
         waitsFor (->
           player.buffer
@@ -49,7 +50,7 @@ describe "Theremin", ->
     describe "#loadBuffer", ->
       it "loads an audio buffer", ->
         runs ->
-          player.loadBuffer "http://upload.wikimedia.org/wikipedia/en/f/fd/Beach_Boys-wouldn_t_it_be_nice.ogg"
+          player.loadBuffer audio_url
 
         waitsFor (->
           player.buffer
@@ -60,7 +61,7 @@ describe "Theremin", ->
     describe "#play, #pause, and #jumpTo", ->
       beforeEach ->
         runs ->
-          player.loadBuffer "http://upload.wikimedia.org/wikipedia/en/f/fd/Beach_Boys-wouldn_t_it_be_nice.ogg"
+          player.loadBuffer audio_url
 
         waitsFor (->
           player.buffer
